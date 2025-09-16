@@ -32,8 +32,8 @@ with col1_df :
 
 with col2_df :
   "Types de lieux disponibles :"
-  df['Catégories'].value_counts()
-  df['Catégories'].uniques()
+  df['Categories_de_POI'].value_counts()
+  df['Categories_de_POI'].uniques()
 
 st.title('Ajustement de la selection')
 
@@ -42,7 +42,7 @@ st.title('Ajustement de la selection')
 types_lieux = []
 
 for index, row in df.iterrows():
-  for i in row["Catégories"] :
+  for i in row["Categories_de_POI"] :
     if i not in types_lieux :
       types_lieux.append(i)
 
