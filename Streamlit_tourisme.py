@@ -33,7 +33,7 @@ with col1_df :
 with col2_df :
   "Types de lieux disponibles :"
   #df['Categories_de_POI'].value_counts()
-  df['Categories_de_POI'].uniques()
+  df['Categories_de_POI'].unique()
 
 st.title('Ajustement de la selection')
 
@@ -82,4 +82,5 @@ st.title('votre sélection :')
 f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieux :"
 
 select
+
 
