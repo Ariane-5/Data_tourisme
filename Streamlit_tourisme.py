@@ -21,6 +21,15 @@ st.title('Critères de recherche')
 #Chargement du DataFrame étudié :
 df = pd.read_csv('ech.csv')
 
+# Remettre la colonne des POI et clean2 au format liste :
+import ast
+df['Categories_de_POI'] = df['Categories_de_POI'].apply(ast.literal_eval)
+df['clean2'] = df['clean2'].apply(ast.literal_eval)
+
+# Remettre les colonnes des départements et CP au format texte :
+df['DEP'] = df['DEP'].astype('str')
+df['CP'] = df['CP'].astype('str')
+
 df.head(5)
 
 col1_df, col2_df = st.columns([0.7, 0.3])
@@ -41,6 +50,7 @@ with col2_df :
         types_lieux.append(i)
 
   types_lieux.sort()
+
   types_lieux
 
   #df['Categories_de_POI'].value_counts()
@@ -85,4 +95,3 @@ st.title('votre sélection :')
 f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieux :"
 
 select
-
