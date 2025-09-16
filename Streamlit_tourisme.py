@@ -32,8 +32,8 @@ with col1_df :
 
 with col2_df :
   "Types de lieux disponibles :"
-  df_sample['Categories_de_POI'].value_counts()
-  df_sample['Categories_de_POI'].uniques()
+  df['Categories_de_POI'].value_counts()
+  df['Categories_de_POI'].uniques()
 
 st.title('Ajustement de la selection')
 
@@ -41,7 +41,7 @@ st.title('Ajustement de la selection')
 
 types_lieux = []
 
-for index, row in df_sample.iterrows():
+for index, row in df.iterrows():
   for i in row["Categories_de_POI"] :
     if i not in types_lieux :
       types_lieux.append(i)
@@ -55,19 +55,19 @@ with col_types :
   type_lieux = st.selectbox("Type de lieu :", types_lieux)
 
 with col_region : 
-  regs = ['(tous)'] + [i for i in df_sample["nom_region"]]
+  regs = ['(tous)'] + [i for i in df["nom_region"]]
   reg = st.selectbox("Région :", regs)
 
 with col_dep :
-  deps = ['(tous)'] + [i for i in df_sample["nom_departement"]]
+  deps = ['(tous)'] + [i for i in df["nom_departement"]]
   dep = st.selectbox("Département :", deps)
 
 
   
 if type_lieux != "(tous)" :
-  select = df_sample[(df_sample['Categories_de_POI'].str.contains(type_lieux))]
+  select = df[(df_sample['Categories_de_POI'].str.contains(type_lieux))]
 if type_lieux == "(tous)" :
-  select = df_sample
+  select = df
 
 if reg != "(tous)" :
   select = select[select['nom_region'] == reg]
