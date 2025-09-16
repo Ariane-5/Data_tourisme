@@ -89,6 +89,8 @@ if reg != "(tous)" :
 if dep != "(tous)" :
   select = select[select['nom_departement'] == dep]
 
+st.write(f"Type sélectionné : {type_lieux}")
+st.write(f"Lignes correspondantes : {select.shape[0]}")
 
 
 st.title('votre sélection :')
