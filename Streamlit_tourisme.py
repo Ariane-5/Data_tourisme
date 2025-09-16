@@ -21,11 +21,13 @@ st.title('Critères de recherche')
 #Chargement du DataFrame étudié :
 df = pd.read_csv('ech.csv')
 
+df.head(5)
+
 col1_df, col2_df = st.columns([0.7, 0.3])
 
 with col1_df :
   f"Voici un échantillon aléatoire de 20 lieux, qui contient {df.shape[0]} lignes :"
-  df_sample = df[df[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']]].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1).sample(20)
+  df_sample = df[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1).sample(20)
   df_sample
 
 with col2_df :
@@ -80,4 +82,3 @@ st.title('votre sélection :')
 f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieux :"
 
 select
-
