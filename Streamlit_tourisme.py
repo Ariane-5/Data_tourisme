@@ -21,6 +21,8 @@ st.title('Aperçu')
 #Chargement du DataFrame étudié :
 df = pd.read_csv('ech.csv')
 
+df.drop_duplicates(inplace=True)
+
 # Remettre la colonne des POI et clean2 au format liste :
 import ast
 df['Categories_de_POI'] = df['Categories_de_POI'].apply(ast.literal_eval)
@@ -29,8 +31,6 @@ df['clean2'] = df['clean2'].apply(ast.literal_eval)
 # Remettre les colonnes des départements et CP au format texte :
 df['DEP'] = df['DEP'].astype('str')
 df['CP'] = df['CP'].astype('str')
-
-df.drop_duplicates(inplace=True)
 
 #col1_df, col2_df = st.columns([0.7, 0.3])
 
