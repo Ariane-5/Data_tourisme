@@ -78,10 +78,11 @@ with col_dep :
 
 
   
-if type_lieux != "(tous)" :
-  select = df[(df['Categories_de_POI'].str.contains(type_lieux, case=False, na=False))]
-if type_lieux == "(tous)" :
-  select = df
+if type_lieux != "(tous)":
+    select = df[df['Categories_de_POI'].apply(lambda x: type_lieux in x)]
+else:
+    select = df.copy()
+
 
 if reg != "(tous)" :
   select = select[select['nom_region'] == reg]
