@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 
@@ -14,10 +16,9 @@ with title2 :
 
 #####
 
+st.write("Je vous propose de trouver des lieux touristiques selon les critères de votre choix, notamment le type de lieu, la région et le département (recherche par mots-clé à venir).")
 
-st.title('Choix de la région')
-
-st.write("Il nous a été demandé premièrement de nettoyer et analyser une base de données contenant les caractérisqtiques de nombreux films, et d'en extraire une selection à proposer à un cinéma Français en perte de vitesse.")
+st.title('Critères de recherche')
 
 #Chargement du DataFrame étudié :
 df = pd.read_csv('ech.csv')
@@ -26,7 +27,7 @@ col1_df, col2_df = st.columns([0.7, 0.3])
 
 with col1_df :
   f"Voici un échantillon aléatoire de 20 lieux, qui contient {df.shape[0]} lignes :"
-  df_sample = df[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1).sample(20)
+  df_sample = df[df[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']]].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1).sample(20)
   df_sample
 
 with col2_df :
@@ -79,6 +80,5 @@ if dep != "(tous)" :
 st.title('votre sélection :')
 
 f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieux :"
-
 
 select
