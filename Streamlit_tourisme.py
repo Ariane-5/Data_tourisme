@@ -67,13 +67,13 @@ with col_types :
 with col_region : 
   regs = ['(tous)'] + [i for i in df["nom_region"]]
   regs = set(regs)
-  #regs = ['(tous)'] + regs.append()
+  regs = sorted(regs)
   reg = st.selectbox("Région :", regs)
 
 with col_dep :
-  deps = [i for i in df["nom_departement"]]
+  deps = ['(tous)'] + [i for i in df["nom_departement"]]
   deps = set(deps)
-  deps = ['(tous)'] + deps
+  deps = sorted(deps)
   dep = st.selectbox("Département :", deps)
 
 
