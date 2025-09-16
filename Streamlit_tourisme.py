@@ -79,7 +79,7 @@ with col_dep :
 
   
 if type_lieux != "(tous)" :
-  select = df[(df_sample['Categories_de_POI'].str.contains(type_lieux))]
+  select = df[(df['Categories_de_POI'].str.contains(type_lieux))]
 if type_lieux == "(tous)" :
   select = df
 
