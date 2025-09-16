@@ -65,13 +65,15 @@ with col_types :
   type_lieux = st.selectbox("Type de lieu :", types_lieux)
 
 with col_region : 
-  regs = ['(tous)'] + [i for i in df["nom_region"]]
+  regs = [i for i in df["nom_region"]]
   regs = set(regs)
+  regs = ['(tous)'] + regs
   reg = st.selectbox("Région :", regs)
 
 with col_dep :
-  deps = ['(tous)'] + [i for i in df["nom_departement"]]
+  deps = [i for i in df["nom_departement"]]
   deps = set(deps)
+  deps = ['(tous)'] + deps
   dep = st.selectbox("Département :", deps)
 
 
