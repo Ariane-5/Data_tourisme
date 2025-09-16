@@ -51,8 +51,6 @@ for index, row in df.iterrows():
 
 types_lieux.sort()
 
-types_lieux
-
 st.title('Critères de selection')
 
 "Nous vous proposons d'effectuer une sélection selon les critères de votre choix :"
