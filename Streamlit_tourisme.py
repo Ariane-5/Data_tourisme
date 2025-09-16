@@ -39,18 +39,16 @@ st.title('Ajustement de la selection')
 
 "Nous vous proposons d'effectuer une sélection selon les critères de votre choix :"
 
-types_lieux = []
-
-for index, row in df.iterrows():
-  for i in row["Categories_de_POI"] :
-    if i not in types_lieux :
-      types_lieux.append(i)
-
-types_lieux.sort()
-
 col_types, col_region, col_dep = st.columns(3)
 
 with col_types :  
+
+  expdtypes = df['Categories_de_POI'].str.split(',')
+  expdtypes = expdtypes.explode('Categories_de_POI')
+  expdtypes = expdtypes.value_counts()
+  expdtypes = pd.DataFrame(expdtypes).reset_index().sort_values('index')
+  types_lieux = expdtypes['index'].unique()
+
   types_lieux = ['(tous)'] + types_lieux
   type_lieux = st.selectbox("Type de lieu :", types_lieux)
 
@@ -82,5 +80,3 @@ st.title('votre sélection :')
 f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieux :"
 
 select
-
-
