@@ -53,7 +53,7 @@ with col2_df :
 
   types_lieux
 
-st.title('Critères deselection')
+st.title('Critères de selection')
 
 "Nous vous proposons d'effectuer une sélection selon les critères de votre choix :"
 
@@ -62,7 +62,7 @@ col_types, col_region, col_dep = st.columns(3)
 
 with col_types :  
   types_lieux = ['(tous)'] + types_lieux
-  type_lieux = st.selectbox("Type de lieu :", types_lieux)
+  type_lieu = st.selectbox("Type de lieu :", types_lieux)
 
 with col_region : 
   regs = ['(tous)'] + [i for i in df["nom_region"]]
@@ -78,8 +78,8 @@ with col_dep :
 
 
   
-if type_lieux != "(tous)":
-    select = df[df['Categories_de_POI'].apply(lambda x: type_lieux in x)]
+if type_lieu != "(tous)":
+    select = df[df['Categories_de_POI'].apply(lambda x: type_lieu in x)]
 else:
     select = df.copy()
 
@@ -90,12 +90,12 @@ if reg != "(tous)" :
 if dep != "(tous)" :
   select = select[select['nom_departement'] == dep]
 
-st.write(f"Type sélectionné : {type_lieux}")
+st.write(f"Type sélectionné : {type_lieu}")
 st.write(f"Lignes correspondantes : {select.shape[0]}")
 
 
-st.title('votre sélection :')
+st.title('Votre sélection :')
 
-f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieux :"
+f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieu(x) :"
 
 select
