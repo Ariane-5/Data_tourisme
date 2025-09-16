@@ -32,26 +32,26 @@ df['CP'] = df['CP'].astype('str')
 
 df.head(5)
 
-col1_df, col2_df = st.columns([0.7, 0.3])
+#col1_df, col2_df = st.columns([0.7, 0.3])
 
-with col1_df :
-  f"Voici un échantillon aléatoire de 20 lieux, qui contient {df.shape[0]} lignes :"
-  df_sample = df[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1).sample(20)
-  df_sample
+#with col1_df :
+f"Voici un échantillon aléatoire de 20 lieux, qui contient {df.shape[0]} lignes :"
+df_sample = df[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1).sample(20)
+df_sample
 
-with col2_df :
-  "Types de lieux disponibles :"
+#with col2_df :
+  #"Types de lieux disponibles :"
   
-  types_lieux = []
+types_lieux = []
 
-  for index, row in df.iterrows():
-    for i in row["Categories_de_POI"] :
-      if i not in types_lieux :
-        types_lieux.append(i)
+for index, row in df.iterrows():
+  for i in row["Categories_de_POI"] :
+    if i not in types_lieux :
+      types_lieux.append(i)
 
-  types_lieux.sort()
+types_lieux.sort()
 
-  types_lieux
+types_lieux
 
 st.title('Critères de selection')
 
