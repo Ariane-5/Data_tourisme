@@ -27,7 +27,7 @@ df['Categories_de_POI'] = df['Categories_de_POI'].apply(ast.literal_eval)
 df['clean2'] = df['clean2'].apply(ast.literal_eval)
 
 # Remettre les colonnes des départements et CP au format texte :
-df['Departement'] = df['Departement'].astype('str')
+df['DEP'] = df['DEP'].astype('str')
 df['CP'] = df['CP'].astype('str')
 
 df.head(5)
@@ -89,4 +89,5 @@ st.title('votre sélection :')
 f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieux :"
 
 select
+
 
