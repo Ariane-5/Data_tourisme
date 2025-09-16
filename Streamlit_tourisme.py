@@ -41,6 +41,7 @@ with col2_df :
         types_lieux.append(i)
 
   types_lieux.sort()
+  types_lieux
 
   #df['Categories_de_POI'].value_counts()
   #df['Categories_de_POI'].uniques()
@@ -84,3 +85,4 @@ st.title('votre sélection :')
 f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieux :"
 
 select
+
