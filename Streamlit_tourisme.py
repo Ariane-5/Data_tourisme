@@ -30,7 +30,7 @@ df['clean2'] = df['clean2'].apply(ast.literal_eval)
 df['DEP'] = df['DEP'].astype('str')
 df['CP'] = df['CP'].astype('str')
 
-df = df.drop_duplicates(inplace = True)
+df.drop_duplicates(inplace=True)
 
 #col1_df, col2_df = st.columns([0.7, 0.3])
 
