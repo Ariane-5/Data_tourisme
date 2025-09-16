@@ -21,15 +21,6 @@ st.title('Critères de recherche')
 #Chargement du DataFrame étudié :
 df = pd.read_csv('ech.csv')
 
-# Remettre la colonne des POI et clean2 au format liste :
-import ast
-df['Categories_de_POI'] = df['Categories_de_POI'].apply(ast.literal_eval)
-df['clean2'] = df['clean2'].apply(ast.literal_eval)
-
-# Remettre les colonnes des départements et CP au format texte :
-df['DEP'] = df['DEP'].astype('str')
-df['CP'] = df['CP'].astype('str')
-
 df.head(5)
 
 col1_df, col2_df = st.columns([0.7, 0.3])
@@ -41,23 +32,27 @@ with col1_df :
 
 with col2_df :
   "Types de lieux disponibles :"
+  
+  types_lieux = []
+
+  for index, row in df.iterrows():
+    for i in row["Categories_de_POI"] :
+      if i not in types_lieux :
+        types_lieux.append(i)
+
+  types_lieux.sort()
+
   #df['Categories_de_POI'].value_counts()
-  df['Categories_de_POI'].unique()
+  #df['Categories_de_POI'].uniques()
 
 st.title('Ajustement de la selection')
 
 "Nous vous proposons d'effectuer une sélection selon les critères de votre choix :"
 
+
 col_types, col_region, col_dep = st.columns(3)
 
 with col_types :  
-
-  expdtypes = df['Categories_de_POI'].str.split(',')
-  expdtypes = expdtypes.explode('Categories_de_POI')
-  expdtypes = expdtypes.value_counts()
-  expdtypes = pd.DataFrame(expdtypes).reset_index().sort_values('index')
-  types_lieux = expdtypes['index'].unique()
-
   types_lieux = ['(tous)'] + types_lieux
   type_lieux = st.selectbox("Type de lieu :", types_lieux)
 
@@ -89,5 +84,3 @@ st.title('votre sélection :')
 f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieux :"
 
 select
-
-
