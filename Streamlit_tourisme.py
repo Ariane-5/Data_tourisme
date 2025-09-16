@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 
@@ -81,5 +79,6 @@ if dep != "(tous)" :
 st.title('votre sélection :')
 
 f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieux :"
+
 
 select
