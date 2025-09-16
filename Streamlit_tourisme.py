@@ -16,7 +16,7 @@ with title2 :
 
 st.write("Je vous propose de trouver des lieux touristiques selon les critères de votre choix, notamment le type de lieu, la région et le département (recherche par mots-clé à venir).")
 
-st.title('Critères de recherche')
+st.title('Aperçu')
 
 #Chargement du DataFrame étudié :
 df = pd.read_csv('ech.csv')
@@ -53,10 +53,7 @@ with col2_df :
 
   types_lieux
 
-  #df['Categories_de_POI'].value_counts()
-  #df['Categories_de_POI'].uniques()
-
-st.title('Ajustement de la selection')
+st.title('Critères deselection')
 
 "Nous vous proposons d'effectuer une sélection selon les critères de votre choix :"
 
@@ -68,7 +65,7 @@ with col_types :
   type_lieux = st.selectbox("Type de lieu :", types_lieux)
 
 with col_region : 
-  regs = ['(tous)'] + [i for i in df["nom_region"]]
+  regs = ['(tous)'] + [i for i in df["nom_region"]].unique()
   reg = st.selectbox("Région :", regs)
 
 with col_dep :
