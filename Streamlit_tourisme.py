@@ -5,7 +5,7 @@ import numpy as np
 import folium
 from branca.element import Figure
 
-from streamlit_folium import st_folium
+#from streamlit_folium import st_folium
 
 st.set_page_config(layout="wide")
 
@@ -125,10 +125,13 @@ if len(select) > 0 :
 
   fig.add_child(map)
   
-  st_folium(map)
+  #st_folium(map)
+  
+  st.components.v1.html(folium.Figure().add_child(map).render(), height=500)
 
 else :
   print('\n --- Pas de résultat :( ---')
+
 
 
 
