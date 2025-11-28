@@ -5,6 +5,8 @@ import numpy as np
 import folium
 from branca.element import Figure
 
+from streamlit_folium import st_folium
+
 st.set_page_config(layout="wide")
 
 title1, title2 = st.columns([0.7, 0.3])
@@ -127,8 +129,6 @@ if len(select) > 0 :
 
 else :
   print('\n --- Pas de résultat :( ---')
-
-
 
 
 
