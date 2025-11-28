@@ -5,20 +5,6 @@ import numpy as np
 import folium
 from branca.element import Figure
 
-# WORDCLOUD
-import imageio.v3 as iio
-import requests
-from io import BytesIO
-
-import numpy as np
-from wordcloud import *
-
-from PIL import Image
-mask_image = np.array(Image.open('image_lille.jpg'))
-# /WORDCLOUD
-
-#from streamlit_folium import st_folium
-
 st.set_page_config(layout="wide")
 
 title1, title2 = st.columns([0.7, 0.3])
@@ -146,45 +132,4 @@ if len(select) > 0 :
 else :
   print('\n --- Pas de résultat :( ---')
 
-# ************ WORDCLOUD ************
 
-tout = [i for i in select['str']]
-tout_ = ''
-
-for i in range(len(tout)):
-  try :
-      txt =  "".join(tout[i])
-  except: 
-      continue
-  
-  tout_ = tout_ + txt
-  
-liste = tout_.split(" ")
-
-import nltk
-nltk.download('popular', quiet = True)
-
-sans_lemma = dict(nltk.FreqDist(liste))
-
-#Générer l'objet sans stopwords (par défaut ignorés en Anglais):
-wordcloud = WordCloud(width=480, height=480, max_font_size=200, min_font_size=10
-                    #, max_words=30
-                    , mask = mask_image, mode="RGBA", margin = 0
-                    , stopwords='ouh')
-
-image_colors = ImageColorGenerator(mask_image)
-
-wordcloud.generate_from_frequencies(sans_lemma)
-
-fig, axes = plt.subplots(2, 1, figsize=(14, 7))
-
-axes[0].imshow(wordcloud.recolor(color_func=image_colors), interpolation="bilinear")
-axes[0].axis("off")
-
-axes[1].imshow(mask_image)
-axes[1].axis("off")
-
-plt.subplots_adjust(left=0, right=1, top=1, bottom=0, wspace=0, hspace=0)  # Supprime les espaces autour et entre les images
-
-plt.show()
-st.pyplot()
