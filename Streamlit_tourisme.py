@@ -123,10 +123,11 @@ if len(select) > 0 :
 
   fig.add_child(map)
   
-  folium_static(map)
+  st_folium(map)
 
 else :
   print('\n --- Pas de résultat :( ---')
+
 
 
 
