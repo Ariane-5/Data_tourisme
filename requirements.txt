@@ -2,5 +2,7 @@ numpy==1.26.4
 pandas==2.2.1
 streamlit==1.46.1
 
+folium == 0.15.1
+
 streamlit_lottie
 requests
