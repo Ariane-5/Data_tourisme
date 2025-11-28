@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+import folium
+from branca.element import Figure
+
 st.set_page_config(layout="wide")
 
 title1, title2 = st.columns([0.7, 0.3])
@@ -94,6 +97,36 @@ st.write(f"Lignes correspondantes : {select.shape[0]}")
 
 st.title('Votre sélection :')
 
-f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieu(x) :"
+# Ajout 28/11/2025
 
-select
+if len(select) > 0 :
+  
+  f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieu(x) :"
+
+  display(select[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1))
+
+  fig = Figure(width=1200, height=700)
+
+  #Utiliser la moyenne des latitudes et longitudes pour centrer la carte :
+
+  lat_moy = select['Latitude'].mean()
+  lon_moy = select['Longitude'].mean()
+
+  map = folium.Map(location = [lat_moy, lon_moy], zoom_start=10, control_scale=True)
+
+  for index, location_info in select.iterrows():
+      try :
+        etiquette = '\n'.join([location_info['Nom_du_POI'], location_info['Contacts_du_POI']])
+        folium.Marker([location_info["Latitude"], location_info["Longitude"]], popup=etiquette).add_to(map)
+      except :
+        continue
+
+  fig.add_child(map)
+  
+  display(map)
+
+else :
+  print('\n --- Pas de résultat :( ---')
+
+
+
