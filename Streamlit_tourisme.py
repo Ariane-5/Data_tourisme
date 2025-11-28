@@ -5,6 +5,8 @@ import numpy as np
 import folium
 from branca.element import Figure
 
+#from streamlit_folium import st_folium
+
 st.set_page_config(layout="wide")
 
 title1, title2 = st.columns([0.7, 0.3])
@@ -97,9 +99,7 @@ st.write(f"Lignes correspondantes : {select.shape[0]}")
 
 st.title('Votre sélection :')
 
-# ************ Ajout 28/11/2025 ************
-
-# ************ CARTE ************
+# Ajout 28/11/2025
 
 if len(select) > 0 :
   
@@ -131,5 +131,6 @@ if len(select) > 0 :
 
 else :
   print('\n --- Pas de résultat :( ---')
+
 
 
