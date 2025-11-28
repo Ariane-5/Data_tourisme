@@ -103,7 +103,7 @@ if len(select) > 0 :
   
   f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieu(x) :"
 
-  display(select[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1))
+  st.dataframe(select[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1))
 
   fig = Figure(width=1200, height=700)
 
@@ -123,7 +123,7 @@ if len(select) > 0 :
 
   fig.add_child(map)
   
-  display(map)
+  map
 
 else :
   print('\n --- Pas de résultat :( ---')
