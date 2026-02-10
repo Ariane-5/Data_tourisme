@@ -12,16 +12,20 @@ st.set_page_config(layout="wide")
 title1, title2 = st.columns([0.7, 0.3])
 
 with title1 :
-  st.title('Projet Tourisme : Recherche de lieux touristiques variés')
+  st.title('Tourisme (en cours de développement)')
+  st.write("Base de données présentant des lieux touristiques variés. En cours de développement... (c'est pas pour demain, cependant... ^^)")
+  st.write("Source : t'inquiète. (En vrai, ça vient d'ici : https://www.data.gouv.fr/datasets/datatourisme-la-base-nationale-des-donnees-publiques-dinformation-touristique-en-open-data. Je n'invente rien et je ne suis pas non plus opératrice de saisie 🤡)")
+  
+  st.write("Mise à jour du 11/02/2025 : Ajout d'un bouton pour valider la sélection des critères avant le chargement de la suite, afin d'optimiser ou ne pas dégrader les performances. Chargement des données actualisées à ce jour, pour la région Hauts-de-France (la finalité étant de proposer la France métropolitaine entière, si cela n'est pas trop lourd...)")
+
 with title2 :
-  "Julie" 
   st.image('image_lille.jpg')
+  st.write('Julie')
 
 #####
 
-st.write("Je vous propose de trouver des lieux touristiques selon les critères de votre choix, notamment le type de lieu, la région et le département (recherche par mots-clé à venir).")
 
-st.title('Aperçu')
+st.title('Aperçu aléatoire')
 
 #Chargement du DataFrame étudié :
 df = pd.read_csv('ech.csv')
@@ -40,8 +44,8 @@ df['CP'] = df['CP'].astype('str')
 #col1_df, col2_df = st.columns([0.7, 0.3])
 
 #with col1_df :
-f"Voici un échantillon aléatoire de 20 lieux, qui contient {df.shape[0]} lignes :"
-df_sample = df[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1).sample(20)
+f"20 lieux au hasard, sur les {df.shape[0]} présents :"
+df_sample = df[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region', 'Date_de_mise_a_jour']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région', 'Date de mise à jour'], axis = 1).sample(20)
 df_sample
 
 #with col2_df :
@@ -58,79 +62,92 @@ types_lieux.sort()
 
 st.title('Critères de selection')
 
-"Nous vous proposons d'effectuer une sélection selon les critères de votre choix :"
+with st.form("filtres"):
 
+  col_types, col_region, col_dep, col_ville = st.columns(4)
 
-col_types, col_region, col_dep = st.columns(3)
+  with col_types :  
+    types_lieux = types_lieux
+    type_lieu = st.multiselect("Type de lieu :", types_lieux)
 
-with col_types :  
-  types_lieux = ['(tous)'] + types_lieux
-  type_lieu = st.selectbox("Type de lieu :", types_lieux)
+  with col_region : 
+    regs = [i for i in df["nom_region"]]
+    regs = set(regs)
+    regs = sorted(regs)
+    reg = st.multiselect("Région :", regs)
 
-with col_region : 
-  regs = ['(tous)'] + [i for i in df["nom_region"]]
-  regs = set(regs)
-  regs = sorted(regs)
-  reg = st.selectbox("Région :", regs)
+  with col_dep :
+    deps = [i for i in df["nom_departement"]]
+    deps = set(deps)
+    deps = sorted(deps)
+    dep = st.multiselect("Département :", deps)
 
-with col_dep :
-  deps = ['(tous)'] + [i for i in df["nom_departement"]]
-  deps = set(deps)
-  deps = sorted(deps)
-  dep = st.selectbox("Département :", deps)
+  with col_ville :
+    villes = [i for i in df["Ville"]]
+    villes = set(villes)
+    villes = sorted(villes)
+    ville = st.multiselect("Ville :", villes)
 
-
+  submit = st.form_submit_button("🔍 Appliquer les filtres")
   
-if type_lieu != "(tous)":
-    select = df[df['Categories_de_POI'].apply(lambda x: type_lieu in x)]
-else:
-    select = df.copy()
+select = df.copy()
+
+if submit:
+
+  if type_lieu:
+      select = select[select["Categories_de_POI"].apply(lambda x: any(t in x for t in type_lieu))]
+
+  if reg:
+      select = select[select["nom_region"].isin(reg)]
+
+  if dep:
+      select = select[select["nom_departement"].isin(dep)]
+
+  if ville:
+        select = select[select["Ville"].isin(ville)]
+
+  st.write(f"Lignes correspondantes : {select.shape[0]}")
+
+  if len(select) > 200 : 
+      st.write('Ça fait beaucoup là... Tu testes mes limites ? Tout repose sur ta connexion...')
 
 
-if reg != "(tous)" :
-  select = select[select['nom_region'] == reg]
+  st.title('Résultats')
 
-if dep != "(tous)" :
-  select = select[select['nom_departement'] == dep]
+  # ************ Ajout 28/11/2025 ************
 
-st.write(f"Type sélectionné : {type_lieu}")
-st.write(f"Lignes correspondantes : {select.shape[0]}")
+  # ************ CARTE ************
 
+  if len(select) > 0 :
+    
+    f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieu(x) :"
 
-st.title('Votre sélection :')
+    st.dataframe(select[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1))
 
-# Ajout 28/11/2025
+    fig = Figure(width=1200, height=700)
 
-if len(select) > 0 :
-  
-  f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieu(x) :"
+    #Utiliser la moyenne des latitudes et longitudes pour centrer la carte :
 
-  st.dataframe(select[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1))
+    lat_moy = select['Latitude'].mean()
+    lon_moy = select['Longitude'].mean()
 
-  fig = Figure(width=1200, height=700)
+    map = folium.Map(location = [lat_moy, lon_moy], zoom_start=10, control_scale=True)
 
-  #Utiliser la moyenne des latitudes et longitudes pour centrer la carte :
+    for index, location_info in select.iterrows():
+        try :
+          etiquette = '\n'.join([location_info['Nom_du_POI'], location_info['Contacts_du_POI']])
+          folium.Marker([location_info["Latitude"], location_info["Longitude"]], popup=etiquette).add_to(map)
+        except :
+          continue
 
-  lat_moy = select['Latitude'].mean()
-  lon_moy = select['Longitude'].mean()
+    fig.add_child(map)
+    
+    #st_folium(map)
+    
+    st.components.v1.html(folium.Figure().add_child(map).render(), height=500)
 
-  map = folium.Map(location = [lat_moy, lon_moy], zoom_start=10, control_scale=True)
+  else :
+    print('\n --- Pas de résultat :( ---')
 
-  for index, location_info in select.iterrows():
-      try :
-        etiquette = '\n'.join([location_info['Nom_du_POI'], location_info['Contacts_du_POI']])
-        folium.Marker([location_info["Latitude"], location_info["Longitude"]], popup=etiquette).add_to(map)
-      except :
-        continue
-
-  fig.add_child(map)
-  
-  #st_folium(map)
-  
-  st.components.v1.html(folium.Figure().add_child(map).render(), height=500)
-
-else :
-  print('\n --- Pas de résultat :( ---')
-
-
+  # ************ WORDCLOUD ************
 
