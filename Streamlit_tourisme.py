@@ -28,25 +28,64 @@ with title2 :
 st.title('Aperçu aléatoire')
 
 #Chargement du DataFrame étudié :
-df = pd.read_csv('ech.csv')
+df = pd.read_csv('test.csv',
+    dtype={
+        "nom_region": "category",
+        "nom_departement": "category"}
+    )
 
 df.drop_duplicates(inplace=True)
+
+st.write("Mémoire utilisée :",
+    round(df.memory_usage(deep=True).sum() / 1024**2, 2),
+    "MB")
 
 # Remettre la colonne des POI et clean2 au format liste :
 import ast
 df['Categories_de_POI'] = df['Categories_de_POI'].apply(ast.literal_eval)
-df['clean2'] = df['clean2'].apply(ast.literal_eval)
+#df['clean2'] = df['clean2'].apply(ast.literal_eval)
 
 # Remettre les colonnes des départements et CP au format texte :
-df['DEP'] = df['DEP'].astype('str')
+#df['DEP'] = df['DEP'].astype('str')
 df['CP'] = df['CP'].astype('str')
 
 #col1_df, col2_df = st.columns([0.7, 0.3])
 
+ech = df[df["Description"].notna()].sample(3)
+
 #with col1_df :
-f"20 lieux au hasard, sur les {df.shape[0]} présents :"
-df_sample = df[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region', 'Date_de_mise_a_jour']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région', 'Date de mise à jour'], axis = 1).sample(20)
-df_sample
+f"3 lieux au hasard, sur les {df.shape[0]} présents :"
+
+
+cols = st.columns(3)
+
+for col, (_, row) in zip(cols, ech.iterrows()):
+
+    with col:
+        st.markdown(
+            f"""
+            <div style="
+                border:1px solid #ddd;
+                padding:12px;
+                border-radius:10px;
+                background-color:#fafafa;
+                color:#222;
+            ">
+                <h4 style="margin-bottom:6px;">{row['nom_region']} - {row['nom_departement']}</h4>
+                <p><b>{row['Nom_du_POI']}</b></p>
+                <p style="font-size:0.9em;">{row['Description']}</p>
+                <p style="font-size:0.8em; color:#555;">
+                    {row['Contacts_du_POI']}
+                </p>
+                <p style="font-size:0.8em; color:#555;">
+                    {row['Adresse_postale']} - {row['CP']} - {row['Ville']}
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
 
 #with col2_df :
   #"Types de lieux disponibles :"
