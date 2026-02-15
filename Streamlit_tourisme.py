@@ -14,9 +14,10 @@ title1, title2 = st.columns([0.7, 0.3])
 with title1 :
   st.title('Tourisme (en cours de développement)')
   st.write("Base de données présentant des lieux touristiques variés. En cours de développement... (c'est pas pour demain, cependant... ^^)")
-  st.write("Source : t'inquiète. (En vrai, ça vient d'ici : https://www.data.gouv.fr/datasets/datatourisme-la-base-nationale-des-donnees-publiques-dinformation-touristique-en-open-data. Je n'invente rien et je ne suis pas non plus opératrice de saisie 🤡)")
+  st.write("Source des données : https://www.data.gouv.fr/datasets/datatourisme-la-base-nationale-des-donnees-publiques-dinformation-touristique-en-open-data. Je n'invente rien et je ne suis pas non plus opératrice de saisie 🤡)")
   
   st.write("Mise à jour du 11/02/2025 : Ajout d'un bouton pour valider la sélection des critères avant le chargement de la suite, afin d'optimiser ou ne pas dégrader les performances. Chargement des données actualisées à ce jour, pour la région Hauts-de-France (la finalité étant de proposer la France métropolitaine entière, si cela n'est pas trop lourd...)")
+  st.write("Mise à jour du 15/02/2025 : Quelques modifications de l'apparence. Ajout des données Ile-de-France. Taille max de fichier : 25MB... A voir plus tard pour l'ajout des autres régions.")
 
 with title2 :
   st.image('image_lille.jpg')
@@ -185,6 +186,4 @@ if submit:
     print('\n --- Pas de résultat :( ---')
 
   # ************ WORDCLOUD ************
-
-
 
