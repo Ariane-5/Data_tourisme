@@ -36,10 +36,6 @@ df = pd.read_csv('test.csv',
 
 df.drop_duplicates(inplace=True)
 
-st.write("Mémoire utilisée :",
-    round(df.memory_usage(deep=True).sum() / 1024**2, 2),
-    "MB")
-
 # Remettre la colonne des POI et clean2 au format liste :
 import ast
 df['Categories_de_POI'] = df['Categories_de_POI'].apply(ast.literal_eval)
@@ -189,4 +185,5 @@ if submit:
     print('\n --- Pas de résultat :( ---')
 
   # ************ WORDCLOUD ************
+
 
