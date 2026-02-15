@@ -28,7 +28,7 @@ with title2 :
 st.title('Aperçu aléatoire')
 
 #Chargement du DataFrame étudié :
-df = pd.read_csv('test.csv',
+df = pd.read_csv('ech.csv',
     dtype={
         "nom_region": "category",
         "nom_departement": "category"}
@@ -185,5 +185,6 @@ if submit:
     print('\n --- Pas de résultat :( ---')
 
   # ************ WORDCLOUD ************
+
 
 
