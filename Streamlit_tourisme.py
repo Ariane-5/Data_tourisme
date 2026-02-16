@@ -147,6 +147,8 @@ if submit:
   if len(select) > 200 : 
       st.write('Ça fait beaucoup là... Tu testes mes limites ? Tout repose sur ta connexion...')
 
+  select["nom_region"] = select["nom_region"].cat.remove_unused_categories()
+  select["nom_departement"] = select["nom_departement"].cat.remove_unused_categories()
 
   st.title('Résultats')
 
@@ -158,9 +160,7 @@ if submit:
     
     f"Les critères sélectionnés réduisent votre sélection à {select.shape[0]} lieu(x) :"
 
-    st.dataframe(select[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1))
-
-    fig = Figure(width=1200, height=700)
+    fig = Figure(width=1200, height=900)
 
     #Utiliser la moyenne des latitudes et longitudes pour centrer la carte :
 
@@ -181,6 +181,37 @@ if submit:
     #st_folium(map)
     
     st.components.v1.html(folium.Figure().add_child(map).render(), height=500)
+
+    #st.dataframe(select[['Nom_du_POI', 'Categories_de_POI','Description', 'Ville','nom_departement', 'nom_region']].set_axis(['Nom', 'Catégories', 'Description', 'Ville', 'Département', 'Région'], axis = 1))
+    
+    for dep, groupe in select.groupby("nom_departement", sort=True):
+
+      st.markdown(
+          f"<h1>{dep}</h1>",
+            unsafe_allow_html=True
+          )
+      
+      for _, row in groupe.iterrows():
+        st.markdown(
+            f"<h3>{row['Nom_du_POI']}</h3>",
+              unsafe_allow_html=True
+            )
+        
+        col1, col2 = st.columns(2)
+        with col1 :
+          st.write(row['Description'])
+          st.write(" ~ ".join(row['Categories_de_POI']))
+
+        with col2 :
+          if pd.notna(row['Contacts_du_POI']) :
+            st.markdown(
+                f'<a href="{row['Contacts_du_POI']}" target="_blank">{row['Contacts_du_POI']}</a>'
+                f"<p>{row['Adresse_postale']} - {row['CP']} - {row['Ville']}</p>",
+                unsafe_allow_html=True
+            )
+          else : 
+            st.write(f"{row['Adresse_postale']} - {row['CP']} - {row['Ville']}")
+        st.divider()
 
   else :
     print('\n --- Pas de résultat :( ---')
