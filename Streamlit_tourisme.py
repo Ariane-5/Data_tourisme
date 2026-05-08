@@ -38,6 +38,9 @@ df = pd.read_csv('ech.csv',
 
 df.drop_duplicates(inplace=True)
 
+ref_couleurs = pd.read_excel("types_POI_en_fr.xlsx")
+dict_couleurs = dict(zip(ref_couleurs["fr"], ref_couleurs["Code_couleur"]))
+
 # Remettre la colonne des POI et clean2 au format liste :
 import ast
 df['Categories_de_POI'] = df['Categories_de_POI'].apply(ast.literal_eval)
@@ -209,39 +212,46 @@ if submit:
       
       for _, row in groupe.iterrows():
 
-          with st.container(border=True):
+        with st.container(border=True):
 
-              st.markdown(
-                  f"<h3>{row['Nom_du_POI']}</h3>",
-                  unsafe_allow_html=True
-              )
+            st.markdown(
+                f"<h3>{row['Nom_du_POI']}</h3>",
+                unsafe_allow_html=True
+            )
 
-              col1, col2 = st.columns(2)
+            col1, col2, col3 = st.columns([0.5, 0.3, 0.2])
 
-              with col1:
-                  st.write(row['Description'])
-                  st.write(" ~ ".join(row['Categories_de_POI']))
+            with col1:
+                st.write(row['Description'])
 
-              with col2:
-                  if pd.notna(row['Contacts_du_POI']):
-                      if row["Contacts_du_POI"].strip().startswith("http"):
+            with col2:
+                if pd.notna(row['Contacts_du_POI']):
+                    if row["Contacts_du_POI"].strip().startswith("http"):
                         st.markdown(
                             f'<a href="{row["Contacts_du_POI"]}" target="_blank">'
                             f'{row["Contacts_du_POI"]}</a>'
                             f"<p>{row['Adresse_postale']} - {row['CP']} - {row['Ville']}</p>",
                             unsafe_allow_html=True
                         )
-                      else:
+                    else:
                         st.markdown(
                             f'<p>{row["Contacts_du_POI"]}</p>'
                             f"<p>{row['Adresse_postale']} - {row['CP']} - {row['Ville']}</p>",
                             unsafe_allow_html=True
                         )                         
-                  else:
-                      st.write(
-                          f"{row['Adresse_postale']} - {row['CP']} - {row['Ville']}"
-                      )
-                  st.write(f"Date de mise à jour : {row["Date_de_mise_a_jour"]}")
+                else:
+                    st.write(
+                        f"{row['Adresse_postale']} - {row['CP']} - {row['Ville']}"
+                    )
+                st.write(f"Date de mise à jour : {row["Date_de_mise_a_jour"]}")
+                
+            with col3:             
+                for i in row['Categories_de_POI']:
+                    couleur = dict_couleurs.get(i, "#999999")
+                    if i not in ['Lieu', "Point d'intérêt"]:
+                        st.markdown(
+                            f'<p style="font-size:0.8em; color:{couleur};">{i}</p>',
+                            unsafe_allow_html=True)
 
   else :
     print('\n --- Pas de résultat :( ---')
