@@ -171,11 +171,26 @@ if submit:
     map = folium.Map(location = [lat_moy, lon_moy], zoom_start=10, control_scale=True)
 
     for index, location_info in select.iterrows():
-        try :
-          etiquette = '\n'.join([location_info['Nom_du_POI'], location_info['Contacts_du_POI']])
-          folium.Marker([location_info["Latitude"], location_info["Longitude"]], popup=etiquette).add_to(map)
-        except :
-          continue
+        try:
+            contact = location_info['Contacts_du_POI']
+            if contact.startswith("http"):
+              popup_html = f"""
+              <b>{location_info['Nom_du_POI']}</b><br>
+              <a href="{contact}" target="_blank">
+                  {contact}
+              </a>
+              """
+            else:
+              popup_html = f"""
+              <b>{location_info['Nom_du_POI']}</b><br>
+              <p>{contact}</p>
+              """
+            folium.Marker(
+                [location_info["Latitude"], location_info["Longitude"]],
+                popup=folium.Popup(popup_html, max_width=300)
+            ).add_to(map)
+        except:
+            continue
 
     fig.add_child(map)
     
