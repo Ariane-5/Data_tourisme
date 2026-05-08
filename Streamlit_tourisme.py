@@ -16,8 +16,9 @@ with title1 :
   st.write("Base de données présentant des lieux touristiques variés. En cours de développement... (c'est pas pour demain, cependant... ^^)")
   st.write("Source des données : https://www.data.gouv.fr/datasets/datatourisme-la-base-nationale-des-donnees-publiques-dinformation-touristique-en-open-data. Je n'invente rien et je ne suis pas non plus opératrice de saisie 🤡)")
   
-  st.write("Mise à jour du 11/02/2025 : Ajout d'un bouton pour valider la sélection des critères avant le chargement de la suite, afin d'optimiser ou ne pas dégrader les performances. Chargement des données actualisées à ce jour, pour la région Hauts-de-France (la finalité étant de proposer la France métropolitaine entière, si cela n'est pas trop lourd...)")
-  st.write("Mise à jour du 15/02/2025 : Quelques modifications de l'apparence. Ajout des données Ile-de-France. Taille max de fichier : 25MB... A voir plus tard pour l'ajout des autres régions.")
+  st.write("Mise à jour du 11/02/2026 : Ajout d'un bouton pour valider la sélection des critères avant le chargement de la suite, afin d'optimiser ou ne pas dégrader les performances. Chargement des données actualisées à ce jour, pour la région Hauts-de-France (la finalité étant de proposer la France métropolitaine entière, si cela n'est pas trop lourd...)")
+  st.write("Mise à jour du 15/02/2026 : Quelques modifications de l'apparence. Ajout des données Ile-de-France. Taille max de fichier : 25MB... A voir plus tard pour l'ajout des autres régions.")
+  st.write("Mise à jour du 08/05/2026 : Données rafraichies.")
 
 with title2 :
   st.image('image_lille.jpg')
@@ -192,26 +193,32 @@ if submit:
           )
       
       for _, row in groupe.iterrows():
-        st.markdown(
-            f"<h3>{row['Nom_du_POI']}</h3>",
-              unsafe_allow_html=True
-            )
-        
-        col1, col2 = st.columns(2)
-        with col1 :
-          st.write(row['Description'])
-          st.write(" ~ ".join(row['Categories_de_POI']))
 
-        with col2 :
-          if pd.notna(row['Contacts_du_POI']) :
-            st.markdown(
-                f'<a href="{row['Contacts_du_POI']}" target="_blank">{row['Contacts_du_POI']}</a>'
-                f"<p>{row['Adresse_postale']} - {row['CP']} - {row['Ville']}</p>",
-                unsafe_allow_html=True
-            )
-          else : 
-            st.write(f"{row['Adresse_postale']} - {row['CP']} - {row['Ville']}")
-        st.divider()
+          with st.container(border=True):
+
+              st.markdown(
+                  f"<h3>{row['Nom_du_POI']}</h3>",
+                  unsafe_allow_html=True
+              )
+
+              col1, col2 = st.columns(2)
+
+              with col1:
+                  st.write(row['Description'])
+                  st.write(" ~ ".join(row['Categories_de_POI']))
+
+              with col2:
+                  if pd.notna(row['Contacts_du_POI']):
+                      st.markdown(
+                          f'<a href="{row["Contacts_du_POI"]}" target="_blank">'
+                          f'{row["Contacts_du_POI"]}</a>'
+                          f"<p>{row['Adresse_postale']} - {row['CP']} - {row['Ville']}</p>",
+                          unsafe_allow_html=True
+                      )
+                  else:
+                      st.write(
+                          f"{row['Adresse_postale']} - {row['CP']} - {row['Ville']}"
+                      )
 
   else :
     print('\n --- Pas de résultat :( ---')
