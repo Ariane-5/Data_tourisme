@@ -18,7 +18,7 @@ with title1 :
   
   st.write("Mise à jour du 11/02/2026 : Ajout d'un bouton pour valider la sélection des critères avant le chargement de la suite, afin d'optimiser ou ne pas dégrader les performances. Chargement des données actualisées à ce jour, pour la région Hauts-de-France (la finalité étant de proposer la France métropolitaine entière, si cela n'est pas trop lourd...)")
   st.write("Mise à jour du 15/02/2026 : Quelques modifications de l'apparence. Ajout des données Ile-de-France. Taille max de fichier : 25MB... A voir plus tard pour l'ajout des autres régions.")
-  st.write("Mise à jour du 08/05/2026 : Données rafraichies.")
+  st.write("Mise à jour du 08/05/2026 : Données rafraichies, modifications visuelles, liens cliquables sur la carte, colorisation des catégories...")
 
 with title2 :
   st.image('image_lille.jpg')
