@@ -173,7 +173,7 @@ if submit:
     for index, location_info in select.iterrows():
         try:
             contact = location_info['Contacts_du_POI']
-            if contact.startswith("http"):
+            if contact.strip().startswith("http"):
               popup_html = f"""
               <b>{location_info['Nom_du_POI']}</b><br>
               <a href="{contact}" target="_blank">
