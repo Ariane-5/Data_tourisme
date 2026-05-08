@@ -224,16 +224,24 @@ if submit:
 
               with col2:
                   if pd.notna(row['Contacts_du_POI']):
-                      st.markdown(
-                          f'<a href="{row["Contacts_du_POI"]}" target="_blank">'
-                          f'{row["Contacts_du_POI"]}</a>'
-                          f"<p>{row['Adresse_postale']} - {row['CP']} - {row['Ville']}</p>",
-                          unsafe_allow_html=True
-                      )
+                      if row["Contacts_du_POI"].strip().startswith("http"):
+                        st.markdown(
+                            f'<a href="{row["Contacts_du_POI"]}" target="_blank">'
+                            f'{row["Contacts_du_POI"]}</a>'
+                            f"<p>{row['Adresse_postale']} - {row['CP']} - {row['Ville']}</p>",
+                            unsafe_allow_html=True
+                        )
+                      else:
+                        st.markdown(
+                            f'<p>{row["Contacts_du_POI"]}</p>'
+                            f"<p>{row['Adresse_postale']} - {row['CP']} - {row['Ville']}</p>",
+                            unsafe_allow_html=True
+                        )                         
                   else:
                       st.write(
                           f"{row['Adresse_postale']} - {row['CP']} - {row['Ville']}"
                       )
+                  st.write(f"Date de mise à jour : {row["Date_de_mise_a_jour"]}")
 
   else :
     print('\n --- Pas de résultat :( ---')
