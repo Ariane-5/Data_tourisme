@@ -6,3 +6,4 @@ folium == 0.15.1
 
 streamlit_lottie
 requests
+openpyxl
