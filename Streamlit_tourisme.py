@@ -19,7 +19,8 @@ with title1 :
   st.write("Mise à jour du 11/02/2026 : Ajout d'un bouton pour valider la sélection des critères avant le chargement de la suite, afin d'optimiser ou ne pas dégrader les performances. Chargement des données actualisées à ce jour, pour la région Hauts-de-France (la finalité étant de proposer la France métropolitaine entière, si cela n'est pas trop lourd...)")
   st.write("Mise à jour du 15/02/2026 : Quelques modifications de l'apparence. Ajout des données Ile-de-France. Taille max de fichier : 25MB... A voir plus tard pour l'ajout des autres régions.")
   st.write("Mise à jour du 08/05/2026 : Données rafraichies, modifications visuelles, liens cliquables sur la carte, ajout d’un code couleur pour les catégories (à vérifier / affiner)...")
-
+  st.write("Mise à jour du 09/05/2026 : Affichage du créateur de la donnée, Affichage des résultats par date de mise à jour décroissante, Ajout des intercommunalités depuis https://www.data.gouv.fr/datasets/base-nationale-sur-les-intercommunalites.")
+  
 with title2 :
   st.image('image_lille.jpg')
   st.write('Julie')
@@ -104,7 +105,7 @@ st.title('Critères de selection')
 
 with st.form("filtres"):
 
-  col_types, col_region, col_dep, col_ville = st.columns(4)
+  col_types, col_region, col_dep, col_intercom, col_ville = st.columns(5)
 
   with col_types :  
     types_lieux = types_lieux
@@ -122,6 +123,12 @@ with st.form("filtres"):
     deps = sorted(deps)
     dep = st.multiselect("Département :", deps)
 
+  with col_intercom :
+    intercom = [i for i in df["raison_sociale"]]
+    intercom = set(intercom)
+    intercom = sorted(intercom)
+    intercomchoice = st.multiselect("Intercommunalité :", intercom)
+
   with col_ville :
     villes = [i for i in df["Ville"]]
     villes = set(villes)
@@ -130,7 +137,7 @@ with st.form("filtres"):
 
   submit = st.form_submit_button("🔍 Appliquer les filtres")
   
-select = df.copy()
+select = df.copy().sort_values(by = 'Date_de_mise_a_jour', ascending = False)
 
 if submit:
 
@@ -145,6 +152,9 @@ if submit:
 
   if ville:
         select = select[select["Ville"].isin(ville)]
+
+  if intercom:
+        select = select[select["raison_sociale"].isin(intercomchoice)]
 
   st.write(f"Lignes correspondantes : {select.shape[0]}")
 
@@ -223,6 +233,8 @@ if submit:
 
             with col1:
                 st.write(row['Description'])
+                st.write(f"Date de mise à jour : {row["Date_de_mise_a_jour"]}")
+                st.write(f"Infos ajoutées par : {row["Createur_de_la_donnee"]}")
 
             with col2:
                 if pd.notna(row['Contacts_du_POI']):
@@ -243,7 +255,6 @@ if submit:
                     st.write(
                         f"{row['Adresse_postale']} - {row['CP']} - {row['Ville']}"
                     )
-                st.write(f"Date de mise à jour : {row["Date_de_mise_a_jour"]}")
                 
             with col3:             
                 for i in row['Categories_de_POI']:
