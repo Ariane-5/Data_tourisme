@@ -22,9 +22,17 @@ st.set_page_config(layout="wide")
 title1, title2 = st.columns([0.7, 0.3])
 
 with title1 :
-  st.title('Tourisme (en cours de développement)')
-  st.write("Base de données présentant des lieux touristiques variés. En cours de développement... (c'est pas pour demain, cependant... ^^)")
-  st.write("Source des données : https://www.data.gouv.fr/datasets/datatourisme-la-base-nationale-des-donnees-publiques-dinformation-touristique-en-open-data. Je n'invente rien et je ne suis pas non plus opératrice de saisie 🤡)")
+  st.title('Tourisme / activités / événements (en cours de développement)')
+  st.markdown("""
+            Base de données présentant des lieux touristiques variés, ainsi que des événements et activités. Petites améliorations régulières… quand j’ai le temps 😄
+
+            Pourquoi regarder ici plutôt que sur Google Maps, par exemple ?
+            Parce qu’ici, l’affichage est orienté tourisme / activités / événements (certains ayant peu de visibilité ailleurs) et alimenté par des professionnels du secteur. C’est donc déjà un filtre intéressant ; sur Google Maps, vous pourriez être “pollué” par des résultats hors sujet, sans affichage des événements ou activités.
+
+            La recherche par catégorie peut aussi bien aider, même si elle reste perfectible. J’aimerais également ajouter une recherche par mots-clés, afin de trouver des choses spécifiques ou d’orienter la recherche de manière très précise.
+            
+            """)
+  st.write("Source des données : https://www.data.gouv.fr/datasets/datatourisme-la-base-nationale-des-donnees-publiques-dinformation-touristique-en-open-data. Je n'invente rien et je ne suis pas non plus opératrice de saisie 🤡 (Traduction : je ne suis aucunement l'auteur du contenu... J'utilise des données existantes, je les retraite et les mets à disposition ici.)")
   with st.expander("Notes de version", expanded = False):
     st.write("11/02/2026 : Ajout d'un bouton pour valider la sélection des critères avant le chargement de la suite, afin d'optimiser ou ne pas dégrader les performances. Chargement des données actualisées à ce jour, pour la région Hauts-de-France (la finalité étant de proposer la France métropolitaine entière, si cela n'est pas trop lourd...)")
     st.write("15/02/2026 : Quelques modifications de l'apparence. Ajout des données Ile-de-France. Taille max de fichier : 25MB... A voir plus tard pour l'ajout des autres régions.")
@@ -133,7 +141,7 @@ if st.session_state.region_validee:
 
         with col_types :  
             types_lieux = types_lieux
-            type_lieu = st.multiselect("Type de lieu :", types_lieux)
+            type_lieu = st.multiselect("Type de lieux / événements / activités :", types_lieux)
 
         with col_dep :
             deps = [i for i in df["nom_departement"]]
